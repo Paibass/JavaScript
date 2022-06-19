@@ -51,16 +51,15 @@ function borrarAlumno(){
 
 const alumnos = [];
 let start = "1";
-let login = true;
 while (start == "1") {
+	let login = true;
 	console.log("Bienvenido. Por Favor Identifiquese.")
 	let usuario = prompt("Sos Alumno o Profesor").toUpperCase();
 	if(usuario == "ALUMNO"){
-		login = true;
 		console.log("Bienvenido Alumno");
 		while(login){
 		let seleccion = prompt("Ingrese un valor \n1)Ver tus notas \n2)Salir");
-		if (seleccion == "nota1") {
+		if (seleccion == "1") {
 			let nota1 = Math.ceil(Math.random() * 9 + 1);
 			let nota2 = Math.ceil(Math.random() * 9 + 1);
 			let nota3 = Math.ceil(Math.random() * 9 + 1);
@@ -71,10 +70,12 @@ while (start == "1") {
 			login = false;
 			console.log("Saliendo...");
 		}
+		else{
+			console.log("Ingrese un valor correcto");
+			}
 	}
 	}
 	else if (usuario == "PROFESOR"){
-		login = true;
 		console.log("Bienvenido Profesor");
 		while (login) {
 			let seleccion = prompt("Ingrese un Valor \n1)Agregar Alumno \n2)Borrar Alumno \n3)Buscar Alumno \n4)Mostar todos los Alumnos \n5)Salir");
