@@ -1,0 +1,37 @@
+*{
+	padding: 0;
+	margin: 0;
+	box-sizing: content-box;
+}
+
+#titulo{
+	padding: 5px;
+	display: flex;
+	justify-content: space-evenly;
+	flex-direction: row;
+	background-color: #f3f3f3;
+	box-shadow: 1px 6px 7px -4px rgba(0,0,0,0.75);
+}
+
+#principal{
+	display: flex;
+	flex-direction: row;
+	padding: 10px;
+	justify-content: center;
+}
+
+img{
+	width: 100px;
+	height: 100px;
+}
+
+.alumno{
+	padding: 10px;
+	margin: 10px;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	border: 2px solid black;
+	border-radius: 10px;
+}
