@@ -6,110 +6,140 @@ class Alumno{
 	}
 }
 
+class Materia{
+	constructor(nombre,nota1,nota2,nota3){
+		this.nombre = nombre;
+		this.nota1 = Number(nota1);
+		this.nota2 = Number(nota2);
+		this.nota3 = Number(nota3);
+	}
+}
+
+function login(){
+	const titulo = document.getElementById("titulo");
+	titulo.innerHTML = `<h1>Sistema Escolar</h1>`;
+	const login = document.getElementById("contenedor");
+	const divLogin = document.createElement("div");
+	divLogin.classList.add("login");
+	divLogin.innerHTML = `
+		<h2>Sistema Escolar</h2>
+		<p>Alumno o Profesor</p>
+		<input id ="usuario" type="text">
+	`;
+	const botonLogin = document.createElement("button");
+	botonLogin.innerHTML = "Ingresar";
+	botonLogin.classList.add("ingreso");
+	botonLogin.addEventListener("click", () => {
+		comprobarLogin();
+	})
+	login.appendChild(divLogin);
+	divLogin.appendChild(botonLogin);	
+}
+
+function comprobarLogin(){
+	let input = document.getElementById("usuario").value;
+	input = input.toUpperCase();
+	if (input == "ALUMNO"){
+		loginAlumno();
+	}
+	else if(input == "PROFESOR"){
+		loginProfesor();
+	}
+	else{
+		alert("USUARIO INCORRECTO");
+	}	
+}
+
+function logout(){
+	const botonLogout = document.createElement("button");
+	botonLogout.innerHTML = "Salir";
+	botonLogout.addEventListener("click", () =>{
+		let borrar = document.getElementById("contenedor");
+		borrar.innerHTML = "";
+		login();
+	})
+	titulo.appendChild(botonLogout);	
+}
+
+function loginAlumno(){
+	logout();
+	let loginAlumno = document.getElementById("contenedor");
+	loginAlumno.innerHTML = "";
+	if(materias.length > 0){
+		const materiaContenedor = document.createElement("div");
+		materiaContenedor.classList.add("materiaContenedor");
+		loginAlumno.appendChild(materiaContenedor);
+		materias.forEach(materia => {
+			const divMateria = document.createElement("div");
+			divMateria.classList.add("materia");
+			divMateria.innerHTML = `
+				<h3>${materia.nombre}</h3>
+				<div>
+				<p>${materia.nota1}</p>
+				<p>${materia.nota2}</p>
+				<p>${materia.nota3}</p>
+				</div>
+			`;
+		materiaContenedor.appendChild(divMateria);
+		})
+	}
+	else{
+		const materiaContenedor = document.createElement("div");
+		materiaContenedor.classList.add("error");
+		materiaContenedor.innerHTML = "<h3>ERROR! Tus notas no estan cargadas</h3>"
+		loginAlumno.appendChild(materiaContenedor);
+	}
+	}
+
+function loginProfesor(){
+	let loginProfesor = document.getElementById("contenedor");
+	loginProfesor.innerHTML = "";
+	const botonAgregarAlumno = document.createElement("button");
+	botonAgregarAlumno.innerHTML = "Agregar Alumno";
+	botonAgregarAlumno.addEventListener("click", () => {
+		agregarAlumno();
+	})
+	const botonAgregarNotas = document.createElement("button");
+	botonAgregarNotas.innerHTML = "Agregar Notas";
+	botonAgregarNotas.addEventListener("click", () => {
+		agregarNotas();
+	})
+	titulo.appendChild(botonAgregarNotas)
+	titulo.appendChild(botonAgregarAlumno);
+	logout();
+}
+
 function agregarAlumno(){
 	let cantidad = prompt("Cuantos desea cargar?");
 		while(cantidad != 0){
 			let alumnoNuevo = new Alumno(prompt("Ingrese el nombre"), prompt("Ingrese el apellido"), prompt("Ingrese el DNI"));
 			alumnos.push(alumnoNuevo);
 			cantidad--;
-			}		
-}
-
-function mostrarAlumnos(){
-	const contenedorDeAlumnos = document.getElementById("principal");
-	contenedorDeAlumnos.innerHTML = "";
+			}
+	const contenedorDeAlumnos = document.getElementById("contenedor");
 	alumnos.forEach(alumno => {
 		const divAlumno = document.createElement("div");
 		divAlumno.classList.add("alumno");
 		divAlumno.innerHTML =  `
-			<img scr="" alt="Alumno">
+			<img src="../img/alumno.jpg" alt="Alumno">
 			<h3>${alumno.nombre}</h3>
 			<h4>${alumno.apellido}</h4>
 			<p>${alumno.dni}</p>
 		`;
 		contenedorDeAlumnos.appendChild(divAlumno);
+		
 	})
+	alumnos.splice(0, alumnos.length);	
 }
 
-function buscarAlumno(){
-		for (const estudiante of alumnos){
-				console.log(estudiante.nombre);
-			}	
-	let busca = prompt("Ingrese el nombre del alumno").toUpperCase();
-	const busqueda = alumnos.find((el) => el.nombre === busca);
-	console.log(busqueda);
-}
-
-function borrarAlumno(){
-	for (const estudiante of alumnos){
-			console.log(estudiante.nombre);
+function agregarNotas(){
+	let cantidad = prompt("Cuantas materias va a cargar");
+		while (cantidad != 0) {
+			let materiaNueva = new Materia(prompt("Ingrese el Nombre de la Materia"), prompt("Ingrese la primera nota"), prompt("Ingrese la segunda nota"), prompt("Ingrese la tercera Nota"));
+			materias.push(materiaNueva);
+			cantidad--;
 		}
-	const nombres = alumnos.map((el) => el.nombre)	
-	let borrar = prompt("A que alumno desea borrar").toUpperCase();
-	let index = nombres.indexOf(borrar)
-		if (index != -1) {
-			alumnos.splice(index,1)
-			console.log("Alumno Borrado");
-		}
-		else{
-			console.log("No existe el alumno");
-		}	
-}
-
+}	
 const alumnos = [];
-let start = "1";
-while (start == "1") {
-	let login = true;
-	console.log("Bienvenido. Por Favor Identifiquese.")
-	let usuario = prompt("Sos Alumno o Profesor").toUpperCase();
-	if(usuario == "ALUMNO"){
-		console.log("Bienvenido Alumno");
-		while(login){
-		let seleccion = prompt("Ingrese un valor \n1)Ver tus notas \n2)Salir");
-		if (seleccion == "1") {
-			let nota1 = Math.ceil(Math.random() * 9 + 1);
-			let nota2 = Math.ceil(Math.random() * 9 + 1);
-			let nota3 = Math.ceil(Math.random() * 9 + 1);
-			let promedio = ((nota1 + nota2 + nota3) / 3);   
-			console.log("Tus notas son:\nNota 1:",nota1 +"\n"+"Nota 2:",nota2 +"\n"+"Nota 3:",nota3 +"\n"+"Promedio:",promedio);
-		}
-		else if (seleccion == "2") {
-			login = false;
-			console.log("Saliendo...");
-		}
-		else{
-			console.log("Ingrese un valor correcto");
-			}
-	}
-	}
-	else if (usuario == "PROFESOR"){
-		console.log("Bienvenido Profesor");
-		while (login) {
-			let seleccion = prompt("Ingrese un Valor \n1)Agregar Alumno \n2)Borrar Alumno \n3)Buscar Alumno \n4)Mostar todos los Alumnos \n5)Salir");
-			if (seleccion == "1") {
-				agregarAlumno();
-			}
-			else if (seleccion == "2") {
-				borrarAlumno();
-			}
-			else if (seleccion == "3") {
-				buscarAlumno();
-			}
-			else if (seleccion == "4"){
-				mostrarAlumnos();
-			}
-			else if (seleccion == "5") {
-				login = false;
-				console.log("Saliendo...");
-			}
-			else{
-				console.log("Ingrese un valor correcto");
-			}
-		}
-	}
-	else{
-		alert("USUARIO INVALIDO");
-		console.log("Saliendo...");
-	}
-
-}
+const materias = [];
+login();

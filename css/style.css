@@ -13,7 +13,7 @@
 	box-shadow: 1px 6px 7px -4px rgba(0,0,0,0.75);
 }
 
-#principal{
+#contenedor{
 	display: flex;
 	flex-direction: row;
 	padding: 10px;
@@ -26,12 +26,76 @@ img{
 }
 
 .alumno{
-	padding: 10px;
-	margin: 10px;
-	text-align: center;
-	display: flex;
-	justify-content: center;
-	flex-direction: column;
+    max-width: 5%;
+    align-content: center;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid black;
+    border-radius: 10px;
+    align-items: center;
+}
+
+.incorrecto{
+	background-color: red;
+}
+
+.login{
+	margin-top: 10%;
 	border: 2px solid black;
 	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	text-align: center;
+	padding: 20px;
+}
+
+.login > h2{
+	font-size: 3rem;
+	margin: 10px;
+}
+
+.login > p{
+	font-size: 1rem;
+	margin: 5px;
+}
+
+.login > input{
+	width: 50%;
+}
+
+.login > button{
+	margin-top: 20px;
+	padding: 5px;
+	font-size: 1.5rem;
+}
+
+.materiaContenedor{
+	width: 100%;
+	border: 3px solid black;
+}
+
+.materia{
+	display: flex;
+	flex-direction: row;
+	border-bottom: 1px solid black;
+	justify-content: center;
+	align-items: center;
+}
+
+.materia > h3{
+	font-size: 3rem;
+	margin: 20px;
+}
+
+.materia > div{
+	width: 100%;
+    font-size: 1.5rem;
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
+    justify-content: space-around;
 }
