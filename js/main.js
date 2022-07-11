@@ -1,108 +1,124 @@
 class Alumno{
 	constructor(nombre,apellido,dni){
-		this.nombre = nombre.toUpperCase();
+		this.nombre = nombre;
 		this.apellido = apellido;
 		this.dni = dni;
 	}
 }
 
-function agregarAlumno(){
-	let cantidad = prompt("Cuantos desea cargar?");
-		while(cantidad != 0){
-			let alumnoNuevo = new Alumno(prompt("Ingrese el nombre"), prompt("Ingrese el apellido"), prompt("Ingrese el DNI"));
-			alumnos.push(alumnoNuevo);
-			cantidad--;
-			}
-}
+let tipoUsuario;
+let nombreUsuario;
 
-function mostrarAlumnos(){
-	for (const estudiante of alumnos){
-				console.log(estudiante.apellido);
-				console.log(estudiante.nombre);
-				console.log(estudiante.dni);
-				console.log("--------------");
-			}
-}
+document.getElementById("formLogin").addEventListener("submit", comprobarLogin);
 
-function buscarAlumno(){
-		for (const estudiante of alumnos){
-				console.log(estudiante.nombre);
-			}	
-	let busca = prompt("Ingrese el nombre del alumno").toUpperCase();
-	const busqueda = alumnos.find((el) => el.nombre === busca);
-	console.log(busqueda);
-}
-
-function borrarAlumno(){
-	for (const estudiante of alumnos){
-			console.log(estudiante.nombre);
-		}
-	const nombres = alumnos.map((el) => el.nombre)	
-	let borrar = prompt("A que alumno desea borrar").toUpperCase();
-	let index = nombres.indexOf(borrar)
-		if (index != -1) {
-			alumnos.splice(index,1)
-			console.log("Alumno Borrado");
-		}
-		else{
-			console.log("No existe el alumno");
-		}	
-}
-
-const alumnos = [];
-let start = "1";
-while (start == "1") {
-	let login = true;
-	console.log("Bienvenido. Por Favor Identifiquese.")
-	let usuario = prompt("Sos Alumno o Profesor").toUpperCase();
-	if(usuario == "ALUMNO"){
-		console.log("Bienvenido Alumno");
-		while(login){
-		let seleccion = prompt("Ingrese un valor \n1)Ver tus notas \n2)Salir");
-		if (seleccion == "1") {
-			let nota1 = Math.ceil(Math.random() * 9 + 1);
-			let nota2 = Math.ceil(Math.random() * 9 + 1);
-			let nota3 = Math.ceil(Math.random() * 9 + 1);
-			let promedio = ((nota1 + nota2 + nota3) / 3);   
-			console.log("Tus notas son:\nNota 1:",nota1 +"\n"+"Nota 2:",nota2 +"\n"+"Nota 3:",nota3 +"\n"+"Promedio:",promedio);
-		}
-		else if (seleccion == "2") {
-			login = false;
-			console.log("Saliendo...");
-		}
-		else{
-			console.log("Ingrese un valor correcto");
-			}
+function comprobarLogin(e){
+	e.preventDefault();
+	tipoUsuario = document.getElementById("user").value.toUpperCase();
+	if(tipoUsuario == "PROFESOR"){
+		LoginProfesor();
 	}
+	else {
+		alert("Escribalo Correctamente");
 	}
-	else if (usuario == "PROFESOR"){
-		console.log("Bienvenido Profesor");
-		while (login) {
-			let seleccion = prompt("Ingrese un Valor \n1)Agregar Alumno \n2)Borrar Alumno \n3)Buscar Alumno \n4)Mostar todos los Alumnos \n5)Salir");
-			if (seleccion == "1") {
-				agregarAlumno();
-			}
-			else if (seleccion == "2") {
-				borrarAlumno();
-			}
-			else if (seleccion == "3") {
-				buscarAlumno();
-			}
-			else if (seleccion == "4"){
-				mostrarAlumnos();
-			}
-			else if (seleccion == "5") {
-				login = false;
-				console.log("Saliendo...");
-			}
-			else{
-				console.log("Ingrese un valor correcto");
-			}
-		}
+}
+
+function LoginProfesor(){
+	const contenedorFormularios = document.getElementById("contenedor");
+
+	contenedorFormularios.innerHTML =
+		`<h3>Identificate Profesor</h3>
+		<form id="formulario-profesor">
+			<input type="text" id="nombre" placeholder="Apellido">
+			<button type="submit">Ingresar</button>
+		</form>`;
+
+		
+	document.getElementById("formulario-profesor").addEventListener("submit", panelProfesor);
+}
+
+function panelProfesor(){
+	nombreUsuario = document.getElementById("nombre").value;
+
+	let bienvenida = document.getElementById("titulo");
+	const avatar = document.createElement("p");
+	const botonAgregarAlumno = document.createElement("button");
+	botonAgregarAlumno.innerText = "Agregar Alumno";
+	botonAgregarAlumno.addEventListener("click", agregarAlumno);
+	avatar.innerHTML=`Hola, ${nombreUsuario}`;
+	bienvenida.appendChild(avatar);
+	bienvenida.appendChild(botonAgregarAlumno);
+
+	let listadoAlumnos = document.getElementById("contenedor");
+	const alumnos = JSON.parse(localStorage.getItem(nombreUsuario));
+
+	if (alumnos == null){
+		listadoAlumnos.innerHTML = "<h3>No tienes alumnos en tu camada. Por Favor cárgalos</h3>"		
 	}
 	else{
-		alert("USUARIO INVALIDO");
-		console.log("Saliendo...");
+		mostrarAlumnos(alumnos);
 	}
 
+}
+
+function mostrarAlumnos(alumnos){
+	let listadoAlumnos = document.getElementById("contenedor");
+	listadoAlumnos.innerHTML = "";
+	let ul = document.createElement("ul");
+	listadoAlumnos.appendChild(ul);
+
+	alumnos.forEach(alumno => {
+		let li = document.createElement("li")
+		li.innerHTML = `${alumno.nombre} ${alumno.apellido} - ${alumno.dni}`
+		const botonBorrar = document.createElement("button");
+		botonBorrar.innerText = "Borrar";
+		botonBorrar.addEventListener("click", () => {
+			borrarAlumno(alumno);
+		})
+		li.appendChild(botonBorrar);
+		ul.appendChild(li);
+	})
+}
+
+function agregarAlumno(){
+	const contenedorFormularios = document.getElementById("contenedor");
+
+	contenedorFormularios.innerHTML = 
+		`<h3>Agregar Alumno</h3>
+		<form id="formAgregarAlumno">
+			<input type="text" id="nombre" placeholder="Nombre">
+			<input type="text" id="apellido" placeholder="Apellido">
+			<input type="text" id="dni" placeholder="DNI">
+			<button type="submit">Agregar Alumno</button>
+		</form>
+		`
+	document.getElementById("contenedor").addEventListener("submit", pushAlumno);	
+}
+
+function pushAlumno(e){
+	e.preventDefault();
+	const nombre = document.getElementById("nombre").value;
+	const apellido = document.getElementById("apellido").value;
+	const dni = document.getElementById("dni").value;
+
+	const alumno = new Alumno(nombre, apellido, dni);
+
+	const alumnosEnLS = JSON.parse(localStorage.getItem(nombreUsuario));
+
+	 if (alumnosEnLS == null){
+	 	localStorage.setItem(nombreUsuario, JSON.stringify([alumno]));
+	 	mostrarAlumnos([alumno]);
+	 }
+	 else{
+	 	alumnosEnLS.push(alumno);
+	 	localStorage.setItem(nombreUsuario, JSON.stringify(alumnosEnLS));
+	 	mostrarAlumnos(alumnosEnLS);
+	 }	
+	 e.target.reset();
+}
+
+function borrarAlumno(alumno){
+	const alumnosEnLS = JSON.parse(localStorage.getItem(nombreUsuario));
+	const borrado = alumnosEnLS.filter(pupilo  => pupilo.nombre != alumno.nombre);
+	localStorage.setItem(nombreUsuario, JSON.stringify(borrado));
+	mostrarAlumnos(borrado);
 }

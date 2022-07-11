@@ -3,10 +3,23 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<script src="js/main.js"></script>
+	<script src="js/main.js" defer></script>
 	<title>Alexia</title>
 </head>
 <body>
-	<h1>Alexia</h1>
+	<header id="titulo">
+		<h1>Alexia</h1>
+	</header>
+	<main>
+		<div id="contenedor">
+			<form id="formLogin">
+				<label for="user">
+					Bienvenido! Escribe profesor para poder entrar
+				</label>
+				<input id="user" type="text" placeholder="Usuario">
+				<input type="submit" value="Ingresar">
+			</form>
+		</div>
+	</main>
 </body>
 </html>
