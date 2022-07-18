@@ -15,6 +15,8 @@ class Materia{
 	}
 }
 
+
+
 function login(){
 	const titulo = document.getElementById("titulo");
 	titulo.innerHTML = `<h1>Sistema Escolar</h1>`;
@@ -40,13 +42,17 @@ function comprobarLogin(){
 	let input = document.getElementById("usuario").value;
 	input = input.toUpperCase();
 	if (input == "ALUMNO"){
+
 		loginAlumno();
 	}
 	else if(input == "PROFESOR"){
 		loginProfesor();
 	}
 	else{
-		alert("USUARIO INCORRECTO");
+		swal("Usuario Incorrecto", {
+			  buttons: false,
+			  timer: 1000,
+			});
 	}	
 }
 
@@ -143,3 +149,4 @@ function agregarNotas(){
 const alumnos = [];
 const materias = [];
 login();
+swal("Hello world!");
