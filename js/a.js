@@ -51,12 +51,7 @@ function panelProfesor(){
 	let listadoAlumnos = document.getElementById("contenedor");
 	const alumnos = JSON.parse(localStorage.getItem(nombreUsuario));
 
-	if (alumnos == null){
-		listadoAlumnos.innerHTML = "<h3>No tienes alumnos en tu camada. Por Favor cárgalos</h3>"		
-	}
-	else{
-		mostrarAlumnos(alumnos);
-	}
+	alumnos == null ? listadoAlumnos.innerHTML = "<h3>No tienes alumnos en tu camada. Por Favor cárgalos</h3>" : mostrarAlumnos(alumnos); 
 
 }
 
